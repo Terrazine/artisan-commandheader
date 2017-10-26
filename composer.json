@@ -1,0 +1,30 @@
+{
+  "name": "terrazine/artisan-commandheader",
+  "description": "Display a table header before a command runs for identification.",
+  "type": "listener",
+  "license": "inherit",
+  "authors": [
+    {
+      "name": "Patrick 'Quezler' Mounier",
+      "email": "Quezler@me.com"
+    }
+  ],
+  "require": {
+    "laravel/framework": "5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Terrazine\\ArtisanCommandHeader\\": "src/"
+    }
+  },
+  "extra": {
+    "terrazine": {
+      "human": "@see terrazine/slayn"
+    },
+    "laravel": {
+      "providers": [
+        "Terrazine\\ArtisanCommandHeader\\TerrazineArtisanCommandHeaderServiceProvider"
+      ]
+    }
+  }
+}
