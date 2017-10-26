@@ -2,9 +2,12 @@
 
 namespace Terrazine\ArtisanCommandHeader;
 
+use Illuminate\Console\Command;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Console\Kernel;
+use Symfony\Component\Console\Helper\Table;
 
 class TerrazineArtisanCommandHeaderServiceProvider extends ServiceProvider
 {
@@ -16,9 +19,20 @@ class TerrazineArtisanCommandHeaderServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::listen(CommandStarting::class, function (CommandStarting $commandStarting) {
-            $commandStarting->output->setDecorated(true);
+
+            $command = $this->getRegisteredCommands()[$commandStarting->command];
+
+            $class = get_class($command);
+
+            $table = new Table($commandStarting->output);
+            $table
+                ->setHeaders(array("<fg=blue>{$class}</>"))
+            ;
+            $table->render();
+
         });
     }
+
     /**
      * Register the application services.
      *
@@ -27,5 +41,12 @@ class TerrazineArtisanCommandHeaderServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    /**
+     * @return Command[] some:command => object instance
+     */
+    public function getRegisteredCommands() {
+        return app(Kernel::class)->all();
     }
 }
