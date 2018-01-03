@@ -20,9 +20,13 @@ class TerrazineArtisanCommandHeaderServiceProvider extends ServiceProvider
     {
         Event::listen(CommandStarting::class, function (CommandStarting $commandStarting) {
 
-            $command = $this->getRegisteredCommands()[$commandStarting->command];
+            try {
+                $command = $this->getRegisteredCommands()[$commandStarting->command];
 
-            $class = get_class($command);
+                $class = get_class($command);
+            } catch (\Exception $e) {
+                $class = \Artisan::class;
+            }
 
             $table = new Table($commandStarting->output);
             $table
